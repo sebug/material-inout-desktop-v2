@@ -1,23 +1,13 @@
-﻿namespace material_inout_desktop_v2;
+﻿using material_inout_desktop_v2.ViewModels;
+
+namespace material_inout_desktop_v2;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
 
-	public MainPage()
+	public MainPage(MainViewModel vm)
 	{
 		InitializeComponent();
-	}
-
-	private void OnCounterClicked(object? sender, EventArgs e)
-	{
-		count++;
-
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
-
-		SemanticScreenReader.Announce(CounterBtn.Text);
+		this.BindingContext = vm;
 	}
 }
