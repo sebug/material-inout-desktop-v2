@@ -2,7 +2,7 @@ namespace material_inout_desktop_v2.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public string Message
+    public string Title
     {
         get;
         set
@@ -10,8 +10,8 @@ public class MainViewModel : ViewModelBase
             if (field != value)
             {
                 field = value;
-                OnPropertyChanged(nameof(Message));
+                OnPropertyChanged(nameof(Title));
             }
         }
-    } = "Material In/Out";
+    } = "Matériel In/Out";
 }
