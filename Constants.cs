@@ -2,7 +2,7 @@ namespace material_inout_desktop_v2;
 
 public static class Constants
 {
-    public const string DatabaseFilename = "UniversalAppData.db3";
+    public const string DatabaseFilename = "MaterialInOutData.db3";
 
     public const SQLite.SQLiteOpenFlags Flags =
         // open the database in read/write mode
