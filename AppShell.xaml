@@ -4,11 +4,16 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:material_inout_desktop_v2"
+    xmlns:pages="clr-namespace:material_inout_desktop_v2.Pages"
     Title="Matériel In/Out">
 
     <ShellContent
         Title="Sortie Matériel"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+
+        <ShellContent Title="Importer Liste des Articles"
+            ContentTemplate="{DataTemplate pages:ImportArticlesPage}"
+            Route="ImportArticlesPage" />
 
 </Shell>

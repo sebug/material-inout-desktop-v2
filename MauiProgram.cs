@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using material_inout_desktop_v2.ViewModels;
 using material_inout_desktop_v2.Repositories;
+using material_inout_desktop_v2.Pages;
 
 namespace material_inout_desktop_v2;
 
@@ -30,12 +31,14 @@ public static class MauiProgram
 	public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
 	{
 		mauiAppBuilder.Services.AddSingleton<MainPage>();
+		mauiAppBuilder.Services.AddSingleton<ImportArticlesPage>();
 		return mauiAppBuilder;
 	}
 
 	public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
 	{
 		mauiAppBuilder.Services.AddSingleton<MainViewModel>();
+		mauiAppBuilder.Services.AddSingleton<ImportArticlesViewModel>();
 		return mauiAppBuilder;
 	}
 
