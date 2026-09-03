@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using material_inout_desktop_v2.ViewModels;
+using material_inout_desktop_v2.Repositories;
 
 namespace material_inout_desktop_v2;
 
@@ -16,7 +17,8 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			})
 			.RegisterViews()
-			.RegisterViewModels();
+			.RegisterViewModels()
+			.RegisterRepositories();
 
 #if DEBUG
 		builder.Logging.AddDebug();
@@ -34,6 +36,12 @@ public static class MauiProgram
 	public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
 	{
 		mauiAppBuilder.Services.AddSingleton<MainViewModel>();
+		return mauiAppBuilder;
+	}
+
+	public static MauiAppBuilder RegisterRepositories(this MauiAppBuilder mauiAppBuilder)
+	{
+		mauiAppBuilder.Services.AddSingleton<IMaterialInOutDatabase, MaterialInOutDatabase>();
 		return mauiAppBuilder;
 	}
 }
