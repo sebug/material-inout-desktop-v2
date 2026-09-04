@@ -6,10 +6,52 @@
              Title="Retour du Matériel"
              x:DataType="vm:ReturnMaterialViewModel"
              >
-    <VerticalStackLayout>
-        <Label 
-            Text="{Binding VoucherID}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="25">
+<Label
+                Text="Retour Matériel"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+        <Label Text="{Binding VoucherID, StringFormat='Numéro du Bon de Sortie: {0}'}"
+        HorizontalOptions="Start" />
+
+        <Label Text="{Binding PersonResponsible, StringFormat='Responsable: {0}'}"
+        HorizontalOptions="Start"
+        />
+
+        <Entry x:Name="barCodeInput"
+        TextChanged="OnBarCodeTextChanged"
+                  />
+
+
+        <CollectionView HeightRequest="300" ItemsSource="{Binding VoucherLines}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:VoucherLineViewModel">
+                        <Grid Padding="25">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{Binding VoucherLine.Label}" />
+                            <Label Grid.Column="1" Text="{Binding VoucherLine.ReturnStatus}" />
+                            <Button Grid.Column="2" Text="Marquer Comme Retourné"
+                            CommandParameter="{Binding}" Command="{Binding MarkAsReturnedCommand}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Nom de la personne confirmant le retour:" />
+
+            <Entry Text="{Binding ReturningPersonName}" />
+
+            <Button x:Name="confirmButton"
+            Text="Confirmer le retour"
+            Command="{Binding ConfirmMaterialReturnCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
