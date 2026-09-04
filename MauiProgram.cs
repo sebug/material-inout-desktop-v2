@@ -47,6 +47,7 @@ public static class MauiProgram
 	public static MauiAppBuilder RegisterRepositories(this MauiAppBuilder mauiAppBuilder)
 	{
 		mauiAppBuilder.Services.AddSingleton<IMaterialInOutDatabase, MaterialInOutDatabase>();
+		mauiAppBuilder.Services.AddSingleton<IArticleRepository, ArticleRepository>();
 		return mauiAppBuilder;
 	}
 
