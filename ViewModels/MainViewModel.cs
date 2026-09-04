@@ -89,7 +89,7 @@ public class MainViewModel : ViewModelBase
                 });
             }
             Articles = new List<ArticleViewModel>();
-            await Shell.Current.GoToAsync("/voucherdetail", ((IDictionary<string, object>)new Dictionary<string, object>
+            await Shell.Current.GoToAsync("/VoucherDetail", ((IDictionary<string, object>)new Dictionary<string, object>
                 {
                     { "VoucherID", voucher.VoucherID.ToString() }
                 })); 

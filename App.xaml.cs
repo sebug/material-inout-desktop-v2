@@ -10,6 +10,7 @@ public partial class App : Application
 		InitializeComponent();
 
 		Routing.RegisterRoute("ImportArticles", typeof(ImportArticlesPage));
+		Routing.RegisterRoute("VoucherDetail", typeof(VoucherDetailPage));
 	}
 
 	protected override Window CreateWindow(IActivationState? activationState)
