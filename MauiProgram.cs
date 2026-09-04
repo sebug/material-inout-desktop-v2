@@ -2,6 +2,7 @@
 using material_inout_desktop_v2.ViewModels;
 using material_inout_desktop_v2.Repositories;
 using material_inout_desktop_v2.Pages;
+using material_inout_desktop_v2.Services;
 
 namespace material_inout_desktop_v2;
 
@@ -19,7 +20,8 @@ public static class MauiProgram
 			})
 			.RegisterViews()
 			.RegisterViewModels()
-			.RegisterRepositories();
+			.RegisterRepositories()
+			.RegisterServices();
 
 #if DEBUG
 		builder.Logging.AddDebug();
@@ -45,6 +47,12 @@ public static class MauiProgram
 	public static MauiAppBuilder RegisterRepositories(this MauiAppBuilder mauiAppBuilder)
 	{
 		mauiAppBuilder.Services.AddSingleton<IMaterialInOutDatabase, MaterialInOutDatabase>();
+		return mauiAppBuilder;
+	}
+
+	public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
+	{
+		mauiAppBuilder.Services.AddSingleton<IArticlesListReader, ArticlesListReader>();
 		return mauiAppBuilder;
 	}
 }
