@@ -16,7 +16,7 @@
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Entry x:Name="barCodeInput" Text="{Binding BarCode}" />
+            <Entry x:Name="barCodeInput" TextChanged="OnBarCodeTextChanged" />
 
             
         </VerticalStackLayout>

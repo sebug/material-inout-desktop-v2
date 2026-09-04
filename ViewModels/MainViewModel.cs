@@ -23,8 +23,14 @@ public class MainViewModel : ViewModelBase
             if (field != value)
             {
                 field = value;
+                MainThread.BeginInvokeOnMainThread(async () => await ProcessEAN(value));
                 OnPropertyChanged(nameof(BarCode));
             }
         }
     } = String.Empty;
+
+    private async Task ProcessEAN(string ean)
+    {
+        
+    }
 }
