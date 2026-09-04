@@ -7,7 +7,7 @@ public class VoucherLine
     [PrimaryKey, AutoIncrement]
     public int VoucherLineID { get; set; }
 
-    public int VoucherId { get; set; }
+    public int VoucherID { get; set; }
 
     // Implemented without explicit link to article line so that
     // we can rename, move articles without reference constraints
