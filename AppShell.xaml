@@ -14,6 +14,6 @@
 
         <ShellContent Title="Importer Liste des Articles"
             ContentTemplate="{DataTemplate pages:ImportArticlesPage}"
-            Route="ImportArticlesPage" />
+            Route="ImportArticles" />
 
 </Shell>

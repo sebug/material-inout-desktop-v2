@@ -5,7 +5,7 @@ namespace material_inout_desktop_v2.Repositories;
 public class ArticleRepository : IArticleRepository
 {
     private readonly IMaterialInOutDatabase Database;
-    public ArticleRepository(MaterialInOutDatabase database)
+    public ArticleRepository(IMaterialInOutDatabase database)
     {
         Database = database;
     }

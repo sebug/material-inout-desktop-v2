@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using material_inout_desktop_v2.Pages;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace material_inout_desktop_v2;
 
@@ -7,6 +8,8 @@ public partial class App : Application
 	public App()
 	{
 		InitializeComponent();
+
+		Routing.RegisterRoute("ImportArticles", typeof(ImportArticlesPage));
 	}
 
 	protected override Window CreateWindow(IActivationState? activationState)

@@ -23,56 +23,70 @@ public class ImportArticlesViewModel : ViewModelBase
 
     private async Task PerformImport()
     {
-        try
+        await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            var options = new PickOptions
+            try
             {
-                PickerTitle = "Importer fichier d'articles"
-            };
-            var result = await FilePicker.PickAsync(options);
-            if (result != null)
-            {
-                if (!result.FileName.EndsWith(".xlsx"))
+                var customFileType = new FilePickerFileType(
+                new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
-                    throw new Exception("Veuillez choisir un fichier .xlsx");
-                }
-                using (var stream = await result.OpenReadAsync())
-                using (var ms = new MemoryStream())
+                    { DevicePlatform.iOS, new[] { "org.openxmlformats.spreadsheetml.sheet" } }, // UTType values
+                    { DevicePlatform.MacCatalyst, new[] { "org.openxmlformats.spreadsheetml.sheet" } }, // UTType values
+                    { DevicePlatform.Android, new[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" } }, // MIME type
+                    { DevicePlatform.WinUI, new[] { ".xlsx" } }, // file extension
+                    { DevicePlatform.Tizen, new[] { "*/*" } },
+                    { DevicePlatform.macOS, new[] { "xlsx" } }, // UTType values
+                });
+                var options = new PickOptions
                 {
-                    stream.CopyTo(ms);
-                    var bytes = ms.ToArray();
-                    var lines = ArticlesListReader.ReadExcelFile(bytes);
-                    try
+                    PickerTitle = "Importer fichier d'articles",
+                    FileTypes = customFileType
+                };
+                var result = await FilePicker.Default.PickAsync(options);
+                if (result != null)
+                {
+                    if (!result.FileName.EndsWith(".xlsx"))
                     {
-                        var linesWithEAN = lines.Where(line => !String.IsNullOrEmpty(line.EAN))
-                        .ToList();
-                        foreach (var line in linesWithEAN)
-                        {
-                            await ArticleRepository.EnsureArticle(new Article
-                            {
-                                Label = line.Label,
-                                Mnemonic = line.Mnemonic,
-                                EAN = line.EAN
-                            });
-                        }
-                        var linesInRepository = await ArticleRepository.GetAllArticles();
-                        await Shell.Current.DisplayAlertAsync("Notification", "Number of lines in repository: " + linesInRepository.Count, "OK");
+                        throw new Exception("Veuillez choisir un fichier .xlsx");
                     }
-                    catch (Exception ex)
+                    using (var stream = await result.OpenReadAsync())
+                    using (var ms = new MemoryStream())
                     {
-                        await Shell.Current.DisplayAlertAsync("Error", $"An error occurred while storing articles: {ex.Message} - {ex.StackTrace}", "OK");
-                        if (ex.InnerException != null)
+                        stream.CopyTo(ms);
+                        var bytes = ms.ToArray();
+                        var lines = ArticlesListReader.ReadExcelFile(bytes);
+                        try
                         {
-                            await Shell.Current.DisplayAlertAsync("Inner Error", ex.ToString(), "OK");
+                            var linesWithEAN = lines.Where(line => !String.IsNullOrEmpty(line.EAN))
+                            .ToList();
+                            foreach (var line in linesWithEAN)
+                            {
+                                await ArticleRepository.EnsureArticle(new Article
+                                {
+                                    Label = line.Label,
+                                    Mnemonic = line.Mnemonic,
+                                    EAN = line.EAN
+                                });
+                            }
+                            var linesInRepository = await ArticleRepository.GetAllArticles();
+                            await Shell.Current.DisplayAlertAsync("Notification", "Number of lines in repository: " + linesInRepository.Count, "OK");
+                        }
+                        catch (Exception ex)
+                        {
+                            await Shell.Current.DisplayAlertAsync("Error", $"An error occurred while storing articles: {ex.Message} - {ex.StackTrace}", "OK");
+                            if (ex.InnerException != null)
+                            {
+                                await Shell.Current.DisplayAlertAsync("Inner Error", ex.ToString(), "OK");
+                            }
                         }
                     }
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-            await Shell.Current.DisplayAlertAsync("Erreur d'import de fichier", "Erreur d'import - " + ex.Message, "OK");
-        }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                await Shell.Current.DisplayAlertAsync("Erreur d'import de fichier", "Erreur d'import - " + ex.Message, "OK");
+            } 
+        });
     }
 }
