@@ -116,9 +116,23 @@ public class MaterialInOutDatabase : IMaterialInOutDatabase
         return result;
     }
 
-    public Task<List<Voucher>> GetReturnedVouchers()
+    public async Task<List<Voucher>> GetReturnedVouchers()
     {
-        throw new NotImplementedException();
+        await Init();
+        var result = new List<Voucher>();
+        await Database!.RunInTransactionAsync(conn =>
+        {
+            result = conn.Table<Voucher>()
+            .ToList()
+            .OrderByDescending(v => v.ReturnedDate)
+            .Where(v => v.ReturnedDate.HasValue).ToList();
+            foreach (var voucher in result)
+            {
+                voucher.VoucherLineCount =
+                    conn.Table<VoucherLine>().Count(line => line.VoucherID == voucher.VoucherID);
+            } 
+        });
+        return result;
     }
 
     public Task<VoucherLine> AddVoucherLine(VoucherLine voucherLine)
