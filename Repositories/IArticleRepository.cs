@@ -4,24 +4,24 @@ namespace material_inout_desktop_v2.Repositories;
 
 public interface IArticleRepository
 {
-    void EnsureArticle(Article article);
-    List<Article> GetAllArticles();
-    Article? GetByEAN(string ean);
-    Voucher CreateVoucher(string name);
+    Task EnsureArticle(Article article);
+    Task<List<Article>> GetAllArticles();
+    Task<Article?> GetByEAN(string ean);
+    Task<Voucher> CreateVoucher(string name);
 
-    List<Voucher> GetAllVouchers();
+    Task<List<Voucher>> GetAllVouchers();
 
-    List<Voucher> GetAllNonReturnedVouchers();
+    Task<List<Voucher>> GetAllNonReturnedVouchers();
 
-    List<Voucher> GetReturnedVouchers();
+    Task<List<Voucher>> GetReturnedVouchers();
 
-    VoucherLine AddVoucherLine(VoucherLine voucherLine);
+    Task<VoucherLine> AddVoucherLine(VoucherLine voucherLine);
 
-    VoucherLine ReturnVoucherLine(int id, string returnText);
+    Task<VoucherLine> ReturnVoucherLine(int id, string returnText);
 
-    Voucher GetVoucherById(int id);
+    Task<Voucher> GetVoucherById(int id);
 
-    Voucher UpdateVoucher(Voucher voucher);
+    Task<Voucher> UpdateVoucher(Voucher voucher);
 
-    List<VoucherLine> GetVoucherLinesByVoucherId(int voucherId);
+    Task<List<VoucherLine>> GetVoucherLinesByVoucherId(int voucherId);
 }

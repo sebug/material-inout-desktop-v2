@@ -48,14 +48,14 @@ public class ImportArticlesViewModel : ViewModelBase
                         .ToList();
                         foreach (var line in linesWithEAN)
                         {
-                            ArticleRepository.EnsureArticle(new Article
+                            await ArticleRepository.EnsureArticle(new Article
                             {
                                 Label = line.Label,
                                 Mnemonic = line.Mnemonic,
                                 EAN = line.EAN
                             });
                         }
-                        var linesInRepository = ArticleRepository.GetAllArticles();
+                        var linesInRepository = await ArticleRepository.GetAllArticles();
                         await Shell.Current.DisplayAlertAsync("Notification", "Number of lines in repository: " + linesInRepository.Count, "OK");
                     }
                     catch (Exception ex)
