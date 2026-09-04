@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:material_inout_desktop_v2.ViewModels"
+             xmlns:entities="clr-namespace:material_inout_desktop_v2.Entities"
              x:Class="material_inout_desktop_v2.MainPage"
              x:DataType="vm:MainViewModel"
              >
@@ -18,6 +19,25 @@
 
             <Entry x:Name="barCodeInput" TextChanged="OnBarCodeTextChanged" />
 
+            <CollectionView HeightRequest="200" ItemsSource="{Binding Articles}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="entities:Article">
+                        <Grid Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{Binding EAN}" />
+                            <Label Grid.Column="1" Text="{Binding Label}" />
+                            <Button Grid.Column="2"
+                                Text="Enlever"
+                                Padding="1,1" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
             
         </VerticalStackLayout>
     </ScrollView>
