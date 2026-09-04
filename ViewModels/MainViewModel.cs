@@ -24,7 +24,7 @@ public class MainViewModel : ViewModelBase
         }
     } = "Matériel In/Out";
 
-    public List<Article> Articles
+    public List<ArticleViewModel> Articles
     {
         get;
         set
@@ -35,7 +35,7 @@ public class MainViewModel : ViewModelBase
                 OnPropertyChanged(nameof(Articles));
             }
         }
-    } = new List<Article>();
+    } = new List<ArticleViewModel>();
 
     public string BarCode
     {
@@ -55,7 +55,7 @@ public class MainViewModel : ViewModelBase
     private async Task ProcessEAN(string ean)
     {
         var articleList = Articles.ToList();
-        if (!articleList.Any(art => art.EAN == ean))
+        if (!articleList.Any(art => art.Article.EAN == ean))
         {
             var article = await ArticleRepository.GetByEAN(ean);
             if (article == null)
@@ -64,7 +64,20 @@ public class MainViewModel : ViewModelBase
                 "Article pas trouvé dans la base de donnés", "OK");
                 return;
             }
-            articleList.Add(article);
+            var avm = new ArticleViewModel
+            {
+                Article = article,
+                RemoveCommand = new Command((arg) =>
+                {
+                    var avm = arg as ArticleViewModel;
+                    if (avm != null)
+                    {
+                        var listWithout = Articles.Where(art => art != avm).ToList();
+                        Articles = listWithout;
+                    }
+                })
+            };
+            articleList.Add(avm);
         }
         Articles = articleList;
     }

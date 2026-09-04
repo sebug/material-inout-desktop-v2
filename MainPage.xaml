@@ -21,7 +21,7 @@
 
             <CollectionView HeightRequest="200" ItemsSource="{Binding Articles}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="entities:Article">
+                    <DataTemplate x:DataType="vm:ArticleViewModel">
                         <Grid Padding="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -29,10 +29,12 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Text="{Binding EAN}" />
-                            <Label Grid.Column="1" Text="{Binding Label}" />
+                            <Label Text="{Binding Article.EAN}" />
+                            <Label Grid.Column="1" Text="{Binding Article.Label}" />
                             <Button Grid.Column="2"
                                 Text="Enlever"
+                                Command="{Binding RemoveCommand}"
+                                CommandParameter="{Binding .}"
                                 Padding="1,1" />
                         </Grid>
                     </DataTemplate>

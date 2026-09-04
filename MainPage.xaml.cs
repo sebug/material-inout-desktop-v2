@@ -22,8 +22,12 @@ public partial class MainPage : ContentPage
 		});
 	}
 
-	void OnBarCodeTextChanged(object sender, EventArgs e)
+	void OnBarCodeTextChanged(object? sender, EventArgs e)
 	{
+		if (sender == null)
+		{
+			return;
+		}
 		string text = ((Entry)sender).Text;
 		if (text != null && text.Length >= 13)
 		{
