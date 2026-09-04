@@ -135,14 +135,28 @@ public class MaterialInOutDatabase : IMaterialInOutDatabase
         return result;
     }
 
-    public Task<VoucherLine> AddVoucherLine(VoucherLine voucherLine)
+    public async Task<VoucherLine> AddVoucherLine(VoucherLine voucherLine)
     {
-        throw new NotImplementedException();
+        await Init();
+        await Database!.InsertAsync(voucherLine);
+        return voucherLine;
     }
 
-    public Task<VoucherLine> ReturnVoucherLine(int id, string returnText)
+    public async Task<VoucherLine> ReturnVoucherLine(int id, string returnText)
     {
-        throw new NotImplementedException();
+        await Init();
+        VoucherLine? voucherLine = null;
+        await Database!.RunInTransactionAsync(conn =>
+        {
+            voucherLine = conn.Table<VoucherLine>().FirstOrDefault(vl => vl.VoucherID == id);
+            if (voucherLine == null)
+            {
+                throw new Exception("Could not find voucher line " + id);
+            }
+            voucherLine.ReturnStatus = returnText;
+            conn.Update(voucherLine); 
+        });
+        return voucherLine ?? throw new Exception("Could not find voucher line " + id);
     }
 
     public Task<Voucher> GetVoucherById(int id)
