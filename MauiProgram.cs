@@ -56,6 +56,7 @@ public static class MauiProgram
 	public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
 	{
 		mauiAppBuilder.Services.AddSingleton<IArticlesListReader, ArticlesListReader>();
+		mauiAppBuilder.Services.AddSingleton<IReportService, ReportService>();
 		return mauiAppBuilder;
 	}
 }

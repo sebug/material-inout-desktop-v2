@@ -2,13 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="material_inout_desktop_v2.Pages.VoucherDetailPage"
-             Title="Détails du bon de sortie">
+             xmlns:vm="clr-namespace:material_inout_desktop_v2.ViewModels"
+             Title="Détails du bon de sortie"
+             x:DataType="vm:VoucherDetailViewModel">
     <ScrollView>
-        <VerticalStackLayout>
-            <Label 
-                Text="{Binding VoucherID}"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
+        <VerticalStackLayout Spacing="25" Padding="25">
+            <Button 
+            Text="Retourner"
+            Command="{Binding ReturnMaterial}"
+            IsVisible="{Binding ShowReturnMaterial}"
+             />
+
+
+    <WebView HeightRequest="600">
+        <WebView.Source>
+            <HtmlWebViewSource Html="{Binding HTMLContent}"></HtmlWebViewSource>
+        </WebView.Source>
+    </WebView>
         </VerticalStackLayout>
     </ScrollView>
 
