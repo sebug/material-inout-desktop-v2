@@ -16,6 +16,8 @@
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
+            <Entry x:Name="barCodeInput" Text="{Binding BarCode}" />
+
             
         </VerticalStackLayout>
     </ScrollView>

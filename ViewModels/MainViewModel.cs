@@ -14,4 +14,17 @@ public class MainViewModel : ViewModelBase
             }
         }
     } = "Matériel In/Out";
+
+    public string BarCode
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(BarCode));
+            }
+        }
+    } = String.Empty;
 }

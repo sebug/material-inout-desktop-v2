@@ -10,4 +10,15 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 		this.BindingContext = vm;
 	}
+
+	protected override void OnAppearing()
+	{
+		Task.Run(() =>
+		{
+			Dispatcher.Dispatch(() =>
+			{
+				barCodeInput.Focus();
+			});
+		});
+	}
 }
