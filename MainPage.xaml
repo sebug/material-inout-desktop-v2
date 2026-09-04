@@ -41,6 +41,15 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
             
+            <Label Text="Nom du responsable:" />
+
+            <Entry Text="{Binding PersonResponsible}" />
+
+            <Button
+                Text="Créer bon de sortie"
+                Command="{Binding CreateVoucherCommand}"
+                 />
+
         </VerticalStackLayout>
     </ScrollView>
 

@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using material_inout_desktop_v2.Entities;
 using material_inout_desktop_v2.Repositories;
 
@@ -9,6 +10,7 @@ public class MainViewModel : ViewModelBase
     public MainViewModel(IArticleRepository articleRepository)
     {
         ArticleRepository = articleRepository;
+        CreateVoucherCommand = new Command(async () => await PerformCreateVoucher());
     }
 
     public string Title
@@ -51,6 +53,48 @@ public class MainViewModel : ViewModelBase
             }
         }
     } = String.Empty;
+
+    public string PersonResponsible
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(PersonResponsible));
+            }
+        }
+    } = String.Empty;
+
+    public ICommand CreateVoucherCommand { get; }
+
+    private async Task PerformCreateVoucher()
+    {
+        await MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+            if (String.IsNullOrEmpty(PersonResponsible))
+            {
+                await Shell.Current.DisplayAlertAsync("Erreur", "Veuillez rentrer le nom du/de la responsable", "OK");
+                return;
+            }
+            var voucher = await ArticleRepository.CreateVoucher(PersonResponsible);
+            foreach (var article in Articles)
+            {
+                await ArticleRepository.AddVoucherLine(new VoucherLine
+                {
+                    VoucherID = voucher.VoucherID,
+                    EAN = article.Article.EAN,
+                    Label = article.Article.Label	
+                });
+            }
+            Articles = new List<ArticleViewModel>();
+            await Shell.Current.GoToAsync("/voucherdetail", ((IDictionary<string, object>)new Dictionary<string, object>
+                {
+                    { "VoucherID", voucher.VoucherID.ToString() }
+                })); 
+        });
+    }
 
     private async Task ProcessEAN(string ean)
     {
