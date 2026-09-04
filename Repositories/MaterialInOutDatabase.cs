@@ -159,18 +159,22 @@ public class MaterialInOutDatabase : IMaterialInOutDatabase
         return voucherLine ?? throw new Exception("Could not find voucher line " + id);
     }
 
-    public Task<Voucher> GetVoucherById(int id)
+    public async Task<Voucher> GetVoucherById(int id)
     {
-        throw new NotImplementedException();
+        await Init();
+        return (await Database!.Table<Voucher>().FirstOrDefaultAsync(v => v.VoucherID == id)) ?? throw new Exception("Did not find voucher with id " + id);
     }
 
-    public Task<Voucher> UpdateVoucher(Voucher voucher)
+    public async Task<Voucher> UpdateVoucher(Voucher voucher)
     {
-        throw new NotImplementedException();
+        await Init();
+        await Database!.UpdateAsync(voucher);
+        return voucher;
     }
 
-    public Task<List<VoucherLine>> GetVoucherLinesByVoucherId(int voucherId)
+    public async Task<List<VoucherLine>> GetVoucherLinesByVoucherId(int voucherId)
     {
-        throw new NotImplementedException();
+        await Init();
+        return await Database!.Table<VoucherLine>().Where(vl => vl.VoucherID == voucherId).ToListAsync();
     }
 }
