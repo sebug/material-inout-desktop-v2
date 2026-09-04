@@ -23,7 +23,7 @@ public class ArticlesListReader : IArticlesListReader
             {
                 throw new Exception("Did not find worksheet part");
             }
-            if (worksheetPart.Worksheet != null)
+            if (worksheetPart.Worksheet == null)
             {
                 throw new Exception("Expected worksheet but did not get it.");
             }
