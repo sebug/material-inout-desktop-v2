@@ -35,6 +35,7 @@ public static class MauiProgram
 		mauiAppBuilder.Services.AddSingleton<MainPage>();
 		mauiAppBuilder.Services.AddSingleton<ImportArticlesPage>();
 		mauiAppBuilder.Services.AddTransient<VoucherDetailPage>();
+		mauiAppBuilder.Services.AddTransient<ReturnMaterialPage>();
 		return mauiAppBuilder;
 	}
 
@@ -43,6 +44,7 @@ public static class MauiProgram
 		mauiAppBuilder.Services.AddSingleton<MainViewModel>();
 		mauiAppBuilder.Services.AddSingleton<ImportArticlesViewModel>();
 		mauiAppBuilder.Services.AddTransient<VoucherDetailViewModel>();
+		mauiAppBuilder.Services.AddTransient<ReturnMaterialViewModel>();
 		return mauiAppBuilder;
 	}
 

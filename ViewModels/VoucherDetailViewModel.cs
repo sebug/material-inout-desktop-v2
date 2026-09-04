@@ -68,9 +68,9 @@ public class VoucherDetailViewModel : ViewModelBase, IQueryAttributable
         {
             try
             {
-                await Shell.Current.GoToAsync("/returnmaterial", ((IDictionary<string, object>)new Dictionary<string, object>
+                await Shell.Current.GoToAsync("/ReturnMaterial", ((IDictionary<string, object>)new Dictionary<string, object>
                 {
-                    { "VoucherId", VoucherID }
+                    { "VoucherID", VoucherID.ToString() }
                 }));
             }
             catch (Exception ex)
