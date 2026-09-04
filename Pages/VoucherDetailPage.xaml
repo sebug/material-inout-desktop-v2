@@ -9,7 +9,7 @@
         <VerticalStackLayout Spacing="25" Padding="25">
             <Button 
             Text="Retourner"
-            Command="{Binding ReturnMaterial}"
+            Command="{Binding ReturnMaterialCommand}"
             IsVisible="{Binding ShowReturnMaterial}"
              />
 
