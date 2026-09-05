@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:material_inout_desktop_v2.ViewModels"
              x:Class="material_inout_desktop_v2.Pages.VoucherListPage"
-             Title="Bons de Sortie">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Bons de Sortie"
+             x:DataType="vm:VoucherListViewModel">
+             <ScrollView>
+<VerticalStackLayout
+            Padding="25">
+
+            <Label
+                Text="Bons de Sortie"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <CollectionView ItemsSource="{Binding Vouchers}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:VoucherViewModel">
+                        <Grid Padding="0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{Binding Voucher.VoucherID}" />
+                            <Label Grid.Column="1" Text="{Binding Voucher.Name}" />
+                            <Label Grid.Column="2" Text="{Binding Voucher.VoucherLineCount}" />
+                            <Label Grid.Column="3" Text="{Binding Path=Voucher.CreatedDate, StringFormat='{0:dd.MM.yyyy}'}" />
+                            <Button Grid.Column="4" Text="Afficher"
+                            CommandParameter="{Binding}" Command="{Binding OpenDetailsPageCommand}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+             </ScrollView>
 </ContentPage>

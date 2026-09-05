@@ -9,4 +9,13 @@ public partial class VoucherListPage : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+		if (BindingContext is VoucherListViewModel vm)
+		{
+			Task.Run(() => vm.Init());
+		}
+    }
 }
