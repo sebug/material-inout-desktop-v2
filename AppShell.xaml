@@ -17,6 +17,11 @@
         ContentTemplate="{DataTemplate pages:VoucherListPage}"
         Route="VoucherList" />
 
+        <ShellContent
+            Title="Bons de Retour"
+            ContentTemplate="{DataTemplate pages:ReturnedVoucherListPage}"
+            Route="ReturnedVoucherList" />
+
         <ShellContent Title="Importer Liste des Articles"
             ContentTemplate="{DataTemplate pages:ImportArticlesPage}"
             Route="ImportArticles" />

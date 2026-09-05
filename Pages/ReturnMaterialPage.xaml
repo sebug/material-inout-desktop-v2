@@ -49,7 +49,7 @@
 
             <Entry Text="{Binding ReturningPersonName}" />
 
-            <Button x:Name="confirmButton"
+            <Button 
             Text="Confirmer le retour"
             Command="{Binding ConfirmMaterialReturnCommand}" />
         </VerticalStackLayout>

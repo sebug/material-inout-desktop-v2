@@ -200,38 +200,41 @@ public class ReturnMaterialViewModel : ViewModelBase, IQueryAttributable
 
     private async Task ConfirmMaterialReturn()
     {
-        try
+        await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            string returningPersonName = ReturningPersonName;
-            if (String.IsNullOrEmpty(returningPersonName))
+            try
             {
-                await Shell.Current.DisplayAlertAsync("Erreur", "Veuillez rentrer le nom de la personne qui confirme le retour", "OK");
-                return;
+                string returningPersonName = ReturningPersonName;
+                if (String.IsNullOrEmpty(returningPersonName))
+                {
+                    await Shell.Current.DisplayAlertAsync("Erreur", "Veuillez rentrer le nom de la personne qui confirme le retour", "OK");
+                    return;
+                }
+                if (VoucherLines.Any(vl => String.IsNullOrEmpty(vl.VoucherLine.ReturnStatus)))
+                {
+                    var notReturnedLines = VoucherLines.Where(vl => String.IsNullOrEmpty(vl.VoucherLine.ReturnStatus))
+                    .ToList();
+                    await Shell.Current.DisplayAlertAsync("Erreur", "Pas retourné: " +
+                    String.Join(", ", notReturnedLines.Select(vl => vl.VoucherLine.Label)), "OK");
+                    return;
+                }
+                foreach (var voucherLine in VoucherLines)
+                {
+                    await ArticleRepository.ReturnVoucherLine(voucherLine.VoucherLine.VoucherLineID, voucherLine.VoucherLine.ReturnStatus);
+                }
+                var voucher = await ArticleRepository.GetVoucherById(VoucherID);
+                voucher.ReturnedDate = DateTimeOffset.Now;
+                voucher.ReturningPersonName = returningPersonName;
+                await ArticleRepository.UpdateVoucher(voucher);
+                await Shell.Current.GoToAsync("/VoucherDetail", ((IDictionary<string, object>)new Dictionary<string, object>
+                {
+                    { "VoucherID", VoucherID.ToString() }
+                }));
             }
-            if (VoucherLines.Any(vl => String.IsNullOrEmpty(vl.VoucherLine.ReturnStatus)))
+            catch (Exception ex)
             {
-                var notReturnedLines = VoucherLines.Where(vl => String.IsNullOrEmpty(vl.VoucherLine.ReturnStatus))
-                .ToList();
-                await Shell.Current.DisplayAlertAsync("Erreur", "Pas retourné: " +
-                String.Join(", ", notReturnedLines.Select(vl => vl.VoucherLine.Label)), "OK");
-                return;
-            }
-            foreach (var voucherLine in VoucherLines)
-            {
-                await ArticleRepository.ReturnVoucherLine(voucherLine.VoucherLine.VoucherLineID, voucherLine.VoucherLine.ReturnStatus);
-            }
-            var voucher = await ArticleRepository.GetVoucherById(VoucherID);
-            voucher.ReturnedDate = DateTimeOffset.Now;
-            voucher.ReturningPersonName = returningPersonName;
-            await ArticleRepository.UpdateVoucher(voucher);
-            await Shell.Current.GoToAsync("/VoucherDetail", ((IDictionary<string, object>)new Dictionary<string, object>
-            {
-                { "VoucherID", VoucherID.ToString() }
-            }));
-        }
-        catch (Exception ex)
-        {
-            await Shell.Current.DisplayAlertAsync("Error", "Erreur de retour de matériel: " + ex.ToString(), "OK");
-        }
+                await Shell.Current.DisplayAlertAsync("Error", "Erreur de retour de matériel: " + ex.ToString(), "OK");
+            } 
+        });
     }
 }

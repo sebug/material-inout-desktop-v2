@@ -13,6 +13,7 @@ public partial class App : Application
 		Routing.RegisterRoute("VoucherDetail", typeof(VoucherDetailPage));
 		Routing.RegisterRoute("ReturnMaterial", typeof(ReturnMaterialPage));
 		Routing.RegisterRoute("VoucherList", typeof(VoucherListPage));
+		Routing.RegisterRoute("ReturnedVoucherList", typeof(ReturnedVoucherListPage));
 	}
 
 	protected override Window CreateWindow(IActivationState? activationState)
