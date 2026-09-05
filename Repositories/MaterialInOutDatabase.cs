@@ -148,7 +148,7 @@ public class MaterialInOutDatabase : IMaterialInOutDatabase
         VoucherLine? voucherLine = null;
         await Database!.RunInTransactionAsync(conn =>
         {
-            voucherLine = conn.Table<VoucherLine>().FirstOrDefault(vl => vl.VoucherID == id);
+            voucherLine = conn.Table<VoucherLine>().FirstOrDefault(vl => vl.VoucherLineID == id);
             if (voucherLine == null)
             {
                 throw new Exception("Could not find voucher line " + id);
