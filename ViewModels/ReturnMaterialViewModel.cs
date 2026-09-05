@@ -224,7 +224,7 @@ public class ReturnMaterialViewModel : ViewModelBase, IQueryAttributable
             voucher.ReturnedDate = DateTimeOffset.Now;
             voucher.ReturningPersonName = returningPersonName;
             await ArticleRepository.UpdateVoucher(voucher);
-            await Shell.Current.GoToAsync("/voucherdetail", ((IDictionary<string, object>)new Dictionary<string, object>
+            await Shell.Current.GoToAsync("/VoucherDetail", ((IDictionary<string, object>)new Dictionary<string, object>
             {
                 { "VoucherID", VoucherID.ToString() }
             }));
