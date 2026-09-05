@@ -60,6 +60,19 @@ public class VoucherDetailViewModel : ViewModelBase, IQueryAttributable
         }
     }
 
+    public string Title
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+    } = String.Empty;
+
     public ICommand ReturnMaterialCommand { get; }
 
     private async Task PerformReturnMaterial()
@@ -97,7 +110,16 @@ public class VoucherDetailViewModel : ViewModelBase, IQueryAttributable
             var voucher = await ArticleRepository.GetVoucherById(VoucherID);
             if (voucher != null)
             {
-                ShowReturnMaterial = !voucher.ReturnedDate.HasValue;
+                if (voucher.ReturnedDate.HasValue)
+                {
+                    Title = "Détails du bon de retour";
+                    ShowReturnMaterial = false;
+                }
+                else
+                {
+                    Title = "Détails du bon de sortie";
+                    ShowReturnMaterial = true;
+                }
             }
         }
         catch (Exception ex)

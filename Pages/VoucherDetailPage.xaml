@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="material_inout_desktop_v2.Pages.VoucherDetailPage"
              xmlns:vm="clr-namespace:material_inout_desktop_v2.ViewModels"
-             Title="Détails du bon de sortie"
+             Title="{Binding Title}"
              x:DataType="vm:VoucherDetailViewModel">
     <ScrollView>
         <VerticalStackLayout Spacing="25" Padding="25">
