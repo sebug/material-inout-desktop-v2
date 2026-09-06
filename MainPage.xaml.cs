@@ -13,10 +13,12 @@ public partial class MainPage : ContentPage
 
 	protected override void OnAppearing()
 	{
-		Task.Run(() =>
+		Task.Run(async () =>
 		{
-			Dispatcher.Dispatch(() =>
+			await MainThread.InvokeOnMainThreadAsync(async () =>
 			{
+				barCodeInput.Focus();
+				await Task.Delay(TimeSpan.FromSeconds(1));
 				barCodeInput.Focus();
 			});
 		});
