@@ -1,6 +1,20 @@
-﻿namespace material_inout_desktop_v2.Views;
+﻿#if IOS || MACCATALYST
+using WebKit;
+#endif
+
+namespace material_inout_desktop_v2.Views;
 
 public class MyWebView : WebView
 {
+    protected override void OnHandlerChanged()
+    {
+        base.OnHandlerChanged();
 
+        #if IOS || MACCATALYST
+        if (Handler != null &&  Handler.PlatformView is WKWebView wKWebView)
+        {
+            
+        }
+        #endif
+    }
 }
