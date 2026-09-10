@@ -33,6 +33,15 @@ public class ReportService : IReportService
             .Replace("{{returnedPersonName}}", voucher.ReturningPersonName);
         }
 
+        if (OperatingSystem.IsIOS() || OperatingSystem.IsMacCatalyst())
+        {
+            html = html.Replace("{{appleSpecificCode}}", "window.webkit.messageHandlers.myWebViewHandler.postMessage('print');");
+        }
+        else
+        {
+            html = html.Replace("{{appleSpecificCode}}", String.Empty);
+        }
+
 
         var voucherLines = await ArticleRepository.GetVoucherLinesByVoucherId(voucherID);
         html = html.Replace("{{lines}}", GetVoucherLinesTable(voucherLines, voucher.ReturnedDate.HasValue));
@@ -137,6 +146,7 @@ Tél. +41 22 774 08 06</p>
     printButton.addEventListener('click', function () {
         try {
             window.print();
+            {{appleSpecificCode}}
         } catch (e) {
             alert('Erreur impression');
         }

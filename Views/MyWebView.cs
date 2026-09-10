@@ -13,7 +13,8 @@ public class MyWebView : WebView
         #if IOS || MACCATALYST
         if (Handler != null &&  Handler.PlatformView is WKWebView wKWebView)
         {
-            
+            var scriptMessageHandler = new MyWebViewScriptMessageHandler(wKWebView);
+            wKWebView.Configuration.UserContentController.AddScriptMessageHandler(scriptMessageHandler, "myWebViewHandler");
         }
         #endif
     }
