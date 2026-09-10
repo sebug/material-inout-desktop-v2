@@ -150,7 +150,6 @@ Tél. +41 22 774 08 06</p>
         } catch (e) {
             alert('Erreur impression');
         }
-        alert('Document imprimé');
     });
     </script>
     </body>

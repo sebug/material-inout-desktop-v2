@@ -16,27 +16,18 @@ public class MyWebViewScriptMessageHandler : WKScriptMessageHandler
 
     override public void DidReceiveScriptMessage(WebKit.WKUserContentController userContentController, WebKit.WKScriptMessage message)
     {
-        try
+        MainThread.BeginInvokeOnMainThread(async () =>
         {
             bool available = UIPrintInteractionController.PrintingAvailable;
             var printInfo = UIPrintInfo.PrintInfo;
-            printInfo.JobName = "Bon à imprimer";
+            printInfo.JobName = "Voucher";
             printInfo.OutputType = UIPrintInfoOutputType.General;
 
             var printController = UIPrintInteractionController.SharedPrintController;
             printController.PrintInfo = printInfo;
             printController.PrintFormatter = _webView.ViewPrintFormatter;
-            printController.Present(true, (handler, completed, error) => {
-                    if (error != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Printing failed: {error.LocalizedDescription}");
-                    }
-                });
-        }
-        catch (Exception ex)
-        {
-            
-        }
+            await printController.PresentAsync(true);   
+        });
     }
 }
 #endif
