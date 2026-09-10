@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="material_inout_desktop_v2.Pages.VoucherDetailPage"
              xmlns:vm="clr-namespace:material_inout_desktop_v2.ViewModels"
+             xmlns:views="clr-namespace:material_inout_desktop_v2.Views"
              Title="{Binding Title}"
              x:DataType="vm:VoucherDetailViewModel">
     <ScrollView>
@@ -14,11 +15,11 @@
              />
 
 
-    <WebView HeightRequest="600">
-        <WebView.Source>
+    <views:MyWebView HeightRequest="600" x:Name="voucherDetailWebView">
+        <views:MyWebView.Source>
             <HtmlWebViewSource Html="{Binding HTMLContent}"></HtmlWebViewSource>
-        </WebView.Source>
-    </WebView>
+        </views:MyWebView.Source>
+    </views:MyWebView>
         </VerticalStackLayout>
     </ScrollView>
 
