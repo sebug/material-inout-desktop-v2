@@ -15,7 +15,7 @@
              />
 
 
-    <views:MyWebView HeightRequest="600" x:Name="voucherDetailWebView">
+    <views:MyWebView HeightRequest="600" x:Name="voucherDetailWebView" HandlerChanged="voucherDetailWebView_HandlerChanged">
         <views:MyWebView.Source>
             <HtmlWebViewSource Html="{Binding HTMLContent}"></HtmlWebViewSource>
         </views:MyWebView.Source>
