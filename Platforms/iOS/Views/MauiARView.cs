@@ -1,0 +1,62 @@
+﻿using ARKit;
+using UIKit;
+
+namespace material_inout_desktop_v2.Views;
+
+public class MauiARView : UIView
+{
+    ARSCNView? _arView;
+    ARSession? _arSession;
+
+    public static bool IsARSupported()
+    {
+        return ARConfiguration.IsSupported;
+    }
+
+    public void StartARSession()
+    {
+        if (_arSession == null)
+            return;
+
+        _arSession.Run(new ARWorldTrackingConfiguration
+        {
+            AutoFocusEnabled = true,
+            LightEstimationEnabled = true,
+            PlaneDetection = ARPlaneDetection.Horizontal,
+            WorldAlignment = ARWorldAlignment.GravityAndHeading
+        }, ARSessionRunOptions.ResetTracking | ARSessionRunOptions.RemoveExistingAnchors);
+
+        AddContent();
+    }
+
+    public void StopARSession()
+    {
+        _arSession?.Pause();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _arSession?.Dispose();
+            _arView?.Dispose();
+
+            _arSession = null;
+            _arView = null;
+        }
+        base.Dispose(disposing);
+    }
+
+    internal void SetARView(ARSCNView view)
+    {
+        _arView = view;
+        _arSession = view.Session;
+    }
+
+    void AddContent()
+    {
+        float size = 0.05f;
+        var sphereNode = new CubeNode(size, UIColor.Blue);
+        _arView?.Scene.RootNode.AddChildNode(sphereNode);
+    }
+}

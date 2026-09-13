@@ -3,6 +3,7 @@ using material_inout_desktop_v2.ViewModels;
 using material_inout_desktop_v2.Repositories;
 using material_inout_desktop_v2.Pages;
 using material_inout_desktop_v2.Services;
+using material_inout_desktop_v2.Views;
 
 namespace material_inout_desktop_v2;
 
@@ -20,6 +21,7 @@ public static class MauiProgram
 			})
 			.RegisterViews()
 			.RegisterViewModels()
+			.RegisterViewHandlers()
 			.RegisterRepositories()
 			.RegisterServices();
 
@@ -69,6 +71,17 @@ public static class MauiProgram
 	{
 		mauiAppBuilder.Services.AddSingleton<IArticlesListReader, ArticlesListReader>();
 		mauiAppBuilder.Services.AddSingleton<IReportService, ReportService>();
+		return mauiAppBuilder;
+	}
+
+	public static MauiAppBuilder RegisterViewHandlers(this MauiAppBuilder mauiAppBuilder)
+	{
+#if IOS
+		mauiAppBuilder.Services.ConfigureMauiHandlers(handlers =>
+		{
+			handlers.AddHandler<ScanARView, ScanARViewHandler>();
+		});
+#endif
 		return mauiAppBuilder;
 	}
 }
