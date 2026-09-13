@@ -8,11 +8,26 @@
              x:DataType="vm:ScanUsingCameraViewModel">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <views:ScanARView />
+        <Button Text="Démarrer le scan" 
+                    Command="{Binding StartARCommand}" 
+                    BackgroundColor="Green" 
+                    TextColor="White" />
+        <Button Grid.Column="1" Text="Arrêter le scan" 
+                    Command="{Binding StopARCommand}" 
+                    BackgroundColor="Red" 
+                    TextColor="White" />
+        <Label Grid.Column="2" Text="{Binding StatusMessage}" 
+                   BackgroundColor="Black" 
+                   TextColor="White" 
+                   Padding="10" />
+        <views:ScanARView Grid.Row="1" Grid.ColumnSpan="3" IsSessionRunning="{Binding IsARActive}" />
     </Grid>
 </ContentPage>
