@@ -55,8 +55,5 @@ public class MauiARView : UIView
 
     void AddContent()
     {
-        float size = 0.05f;
-        var sphereNode = new CubeNode(size, UIColor.Blue);
-        _arView?.Scene.RootNode.AddChildNode(sphereNode);
     }
 }
