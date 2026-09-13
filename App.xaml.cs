@@ -14,6 +14,9 @@ public partial class App : Application
 		Routing.RegisterRoute("ReturnMaterial", typeof(ReturnMaterialPage));
 		Routing.RegisterRoute("VoucherList", typeof(VoucherListPage));
 		Routing.RegisterRoute("ReturnedVoucherList", typeof(ReturnedVoucherListPage));
+		#if IOS
+		Routing.RegisterRoute("ScanUsingCamera", typeof(ScanUsingCameraPage));
+		#endif
 	}
 
 	protected override Window CreateWindow(IActivationState? activationState)

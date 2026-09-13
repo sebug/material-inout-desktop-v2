@@ -38,6 +38,9 @@ public static class MauiProgram
 		mauiAppBuilder.Services.AddTransient<ReturnMaterialPage>();
 		mauiAppBuilder.Services.AddSingleton<VoucherListPage>();
 		mauiAppBuilder.Services.AddSingleton<ReturnedVoucherListPage>();
+#if IOS
+		mauiAppBuilder.Services.AddSingleton<ScanUsingCameraPage>();
+#endif
 		return mauiAppBuilder;
 	}
 
@@ -49,6 +52,9 @@ public static class MauiProgram
 		mauiAppBuilder.Services.AddTransient<ReturnMaterialViewModel>();
 		mauiAppBuilder.Services.AddSingleton<VoucherListViewModel>();
 		mauiAppBuilder.Services.AddSingleton<ReturnedVoucherListViewModel>();
+#if IOS
+		mauiAppBuilder.Services.AddSingleton<ScanUsingCameraViewModel>();
+#endif
 		return mauiAppBuilder;
 	}
 

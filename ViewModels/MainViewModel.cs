@@ -76,7 +76,10 @@ public class MainViewModel : ViewModelBase
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            
+            await Shell.Current.GoToAsync("/ScanUsingCamera", ((IDictionary<string, object>)new Dictionary<string, object>
+                {
+                    { "IsMaterialIn", true.ToString() }
+                }));
         });
     }
 

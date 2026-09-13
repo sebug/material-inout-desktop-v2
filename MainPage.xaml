@@ -26,7 +26,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Entry x:Name="barCodeInput" TextChanged="OnBarCodeTextChanged" />
-                <Button Text="📷" Grid.Column="1" IsVisible="{Binding ShowOpenCamera}" />
+                <Button Text="📷" Grid.Column="1" IsVisible="{Binding ShowOpenCamera}" Command="{Binding OpenCameraCommand}" />
             </Grid>
 
             <CollectionView HeightRequest="200" ItemsSource="{Binding Articles}">
