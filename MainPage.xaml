@@ -17,7 +17,17 @@
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Entry x:Name="barCodeInput" TextChanged="OnBarCodeTextChanged" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Entry x:Name="barCodeInput" TextChanged="OnBarCodeTextChanged" />
+                <Button Text="📷" Grid.Column="1" IsVisible="{Binding ShowOpenCamera}" />
+            </Grid>
 
             <CollectionView HeightRequest="200" ItemsSource="{Binding Articles}">
                 <CollectionView.ItemTemplate>

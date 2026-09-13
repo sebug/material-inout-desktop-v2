@@ -11,6 +11,7 @@ public class MainViewModel : ViewModelBase
     {
         ArticleRepository = articleRepository;
         CreateVoucherCommand = new Command(async () => await PerformCreateVoucher());
+        OpenCameraCommand = new Command(async () => await PerformOpenCamera());
     }
 
     public string Title
@@ -66,6 +67,18 @@ public class MainViewModel : ViewModelBase
             }
         }
     } = String.Empty;
+
+    public bool ShowOpenCamera => OperatingSystem.IsIOS();
+
+    public ICommand OpenCameraCommand { get; }
+
+    private async Task PerformOpenCamera()
+    {
+        await MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+            
+        });
+    }
 
     public ICommand CreateVoucherCommand { get; }
 
