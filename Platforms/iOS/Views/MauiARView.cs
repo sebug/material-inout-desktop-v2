@@ -8,6 +8,8 @@ public class MauiARView : UIView
     ARSCNView? _arView;
     ARSession? _arSession;
 
+    BarcodeScannerARSessionDelegate? _barcodeScannerSessionDelegate;
+
     public static bool IsARSupported()
     {
         return ARConfiguration.IsSupported;
@@ -16,7 +18,9 @@ public class MauiARView : UIView
     public void StartARSession()
     {
         if (_arSession == null)
+        {
             return;
+        }
 
         _arSession.Run(new ARWorldTrackingConfiguration
         {
@@ -40,9 +44,11 @@ public class MauiARView : UIView
         {
             _arSession?.Dispose();
             _arView?.Dispose();
+            _barcodeScannerSessionDelegate?.Dispose();
 
             _arSession = null;
             _arView = null;
+            _barcodeScannerSessionDelegate = null;
         }
         base.Dispose(disposing);
     }
@@ -51,6 +57,8 @@ public class MauiARView : UIView
     {
         _arView = view;
         _arSession = view.Session;
+        _barcodeScannerSessionDelegate = new BarcodeScannerARSessionDelegate();
+        _arSession.Delegate = _barcodeScannerSessionDelegate;
     }
 
     void AddContent()
