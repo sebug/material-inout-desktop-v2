@@ -16,7 +16,11 @@ public class BarcodeSceneDelegate : ARSCNViewDelegate
 
         const float size = 0.05f; // 5 cm
         var box = SCNBox.Create(size, size, size, 0);
-        box.FirstMaterial!.Diffuse.Contents = UIColor.SystemBlue;
+        var material = box.FirstMaterial!;
+        material.Diffuse.Contents = UIColor.SystemBlue;
+        material.Transparency = 0.5f;
+        
+
 
         var boxNode = SCNNode.FromGeometry(box);
         // The raycast's Y axis is the surface normal, so lift the box to sit on the surface
