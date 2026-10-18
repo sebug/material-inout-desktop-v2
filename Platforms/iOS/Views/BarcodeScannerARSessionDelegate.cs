@@ -17,11 +17,6 @@ public class BarcodeScannerARSessionDelegate : ARSessionDelegate
 
     private readonly VNDetectBarcodesRequest _barcodesRequest;
 
-    // Storing the information we need to map the scanned barcode bounding box to the real world
-    private readonly record struct CameraSnapshot(NMatrix4 Transform, NMatrix3 Intrinsics, CGSize ImageSize);
-
-    private ARSession? _session;
-
     public BarcodeScannerARSessionDelegate()
     {
         _barcodesRequest = new VNDetectBarcodesRequest((_, _) => {})
@@ -101,7 +96,9 @@ public class BarcodeScannerARSessionDelegate : ARSessionDelegate
             BarcodeScanned?.Invoke(this, new BarcodeScannedDetailedEventArgs
             {
                 BarcodeContent = payload,
-                Symbology = symbology
+                Symbology = symbology,
+                CameraSnapshot = camera,
+                BoundingBox = barcode.BoundingBox
             });
         }
     }
