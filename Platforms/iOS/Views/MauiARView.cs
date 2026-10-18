@@ -106,6 +106,10 @@ public class MauiARView : UIView
             SCNAction.ScaleTo(1.2f, 0.1),
             SCNAction.ScaleTo(1.0f, 0.1)
         }));
+        BarcodeScanned?.Invoke(this, new BarcodeScannedEventArgs
+        {
+            BarcodeContent = payload
+        });
     }
 
     /// <summary>
