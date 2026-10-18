@@ -12,6 +12,7 @@ public class MauiARView : UIView
     ARSession? _arSession;
 
     BarcodeScannerARSessionDelegate? _barcodeScannerSessionDelegate;
+    BarcodeSceneDelegate? _barcodeSceneDelegate;
 
     private HashSet<string> _placedPayloads = new HashSet<string>();
 
@@ -61,6 +62,8 @@ public class MauiARView : UIView
     internal void SetARView(ARSCNView view)
     {
         _arView = view;
+        _barcodeSceneDelegate = new BarcodeSceneDelegate();
+        _arView.Delegate = _barcodeSceneDelegate;
         _arSession = view.Session;
         _barcodeScannerSessionDelegate = new BarcodeScannerARSessionDelegate();
         _arSession.Delegate = _barcodeScannerSessionDelegate;
@@ -74,6 +77,15 @@ public class MauiARView : UIView
     /// <param name="e"></param>
     private void OnBarcodeScanned(object? sender, BarcodeScannedDetailedEventArgs e)
     {
+        lock (_placedPayloads)
+        {
+            // Only place one object per barcode
+            if (!_placedPayloads.Add(e.BarcodeContent))
+            {
+                return;
+            }
+        }
+
         var camera = e.CameraSnapshot;
         var box = e.BoundingBox;
         var visionCenter = new CGPoint(box.GetMidX(), box.GetMidY());
