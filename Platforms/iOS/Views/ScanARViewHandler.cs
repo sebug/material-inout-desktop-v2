@@ -21,9 +21,7 @@ public class ScanARViewHandler : ViewHandler<ScanARView, ARSCNView>
     {
         var arView = new ARSCNView()
         {
-            AutoenablesDefaultLighting = true,
-            DebugOptions = ARSCNDebugOptions.ShowWorldOrigin,
-            ShowsStatistics = true
+            AutoenablesDefaultLighting = true
         };
 
         _mauiARView = new MauiARView();
