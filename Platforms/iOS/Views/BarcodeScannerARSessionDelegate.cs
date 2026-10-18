@@ -2,6 +2,7 @@ using ARKit;
 using CoreVideo;
 using Foundation;
 using ImageIO;
+using material_inout_desktop_v2.Events;
 using UIKit;
 using Vision;
 
@@ -84,11 +85,16 @@ public class BarcodeScannerARSessionDelegate : ARSessionDelegate
             var payload = barcode.PayloadStringValue;
             var symbology = barcode.Symbology;
 
-            // This runs on a background thread, so marshal any UI work
-            UIApplication.SharedApplication.InvokeOnMainThread(() =>
+            if (payload != null)
             {
-                Console.WriteLine($"Found {symbology}: {payload}");
-            });
+                BarcodeScanned?.Invoke(this, new BarcodeScannedDetailedEventArgs
+                {
+                    BarcodeContent = payload,
+                    Symbology = symbology
+                });
+            }
         }
     }
+
+    public event EventHandler<BarcodeScannedDetailedEventArgs>? BarcodeScanned;
 }

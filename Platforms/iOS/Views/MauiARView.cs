@@ -1,4 +1,5 @@
 ﻿using ARKit;
+using material_inout_desktop_v2.Events;
 using UIKit;
 
 namespace material_inout_desktop_v2.Views;
@@ -59,7 +60,23 @@ public class MauiARView : UIView
         _arSession = view.Session;
         _barcodeScannerSessionDelegate = new BarcodeScannerARSessionDelegate();
         _arSession.Delegate = _barcodeScannerSessionDelegate;
+        _barcodeScannerSessionDelegate.BarcodeScanned += OnBarcodeScanned;
     }
+
+    /// <summary>
+    /// On barcode scanned: Display an overlay for the barcode, and then bubble up the event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnBarcodeScanned(object? sender, BarcodeScannedDetailedEventArgs e)
+    {
+        BarcodeScanned?.Invoke(this, new BarcodeScannedEventArgs
+        {
+            BarcodeContent = e.BarcodeContent
+        });
+    }
+
+    public event EventHandler<BarcodeScannedEventArgs>? BarcodeScanned;
 
     void AddContent()
     {
