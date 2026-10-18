@@ -2,6 +2,7 @@
 using ARKit;
 using CoreGraphics;
 using material_inout_desktop_v2.Events;
+using SceneKit;
 using UIKit;
 
 namespace material_inout_desktop_v2.Views;
@@ -68,6 +69,43 @@ public class MauiARView : UIView
         _barcodeScannerSessionDelegate = new BarcodeScannerARSessionDelegate();
         _arSession.Delegate = _barcodeScannerSessionDelegate;
         _barcodeScannerSessionDelegate.BarcodeScanned += OnBarcodeScanned;
+
+        var tap = new UITapGestureRecognizer(HandleTap);
+        _arView.AddGestureRecognizer(tap);
+    }
+
+    private void HandleTap(UITapGestureRecognizer gesture)
+    {
+        if (_arView == null)
+        {
+            return;
+        }
+        var location = gesture.LocationInView(_arView);
+        var hits = _arView.HitTest(location, new SCNHitTestOptions());
+
+        foreach (var hit in hits)
+        {
+            // Walk up the hierarchy in case you later add child nodes to the box
+            for (var node = hit.Node; node != null; node = node.ParentNode)
+            {
+                if (node.Name?.StartsWith("barcode:") == true)
+                {
+                    var payload = node.Name.Substring("barcode:".Length);
+                    OnBarcodeBoxTapped(node, payload);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void OnBarcodeBoxTapped(SCNNode boxNode, string payload)
+    {
+        // Quick visual feedback: a little "bounce"
+        boxNode.RunAction(SCNAction.Sequence(new[]
+        {
+            SCNAction.ScaleTo(1.2f, 0.1),
+            SCNAction.ScaleTo(1.0f, 0.1)
+        }));
     }
 
     /// <summary>
