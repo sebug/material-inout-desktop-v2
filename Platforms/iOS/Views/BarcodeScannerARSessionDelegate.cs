@@ -1,4 +1,5 @@
 using ARKit;
+using CoreGraphics;
 using CoreVideo;
 using Foundation;
 using ImageIO;
@@ -16,9 +17,14 @@ public class BarcodeScannerARSessionDelegate : ARSessionDelegate
 
     private readonly VNDetectBarcodesRequest _barcodesRequest;
 
+    // Storing the information we need to map the scanned barcode bounding box to the real world
+    private readonly record struct CameraSnapshot(NMatrix4 Transform, NMatrix3 Intrinsics, CGSize ImageSize);
+
+    private ARSession? _session;
+
     public BarcodeScannerARSessionDelegate()
     {
-        _barcodesRequest = new VNDetectBarcodesRequest(HandleBarcodes)
+        _barcodesRequest = new VNDetectBarcodesRequest((_, _) => {})
         {
             Symbologies = new[] { VNBarcodeSymbology.Ean13 }
         };
@@ -44,6 +50,11 @@ public class BarcodeScannerARSessionDelegate : ARSessionDelegate
 
             // Separate managed reference to the buffer, so the frame itself can be released now
             CVPixelBuffer pixelBuffer = frame.CapturedImage;
+            CameraSnapshot snapshot;
+            using (var camera = frame.Camera)
+            {
+                snapshot = new CameraSnapshot(camera.Transform, camera.Intrinsics, camera.ImageResolution);
+            }
 
             Task.Run(() =>
             {
@@ -59,6 +70,13 @@ public class BarcodeScannerARSessionDelegate : ARSessionDelegate
                     {
                         Console.WriteLine($"Barcode request failed: {error.LocalizedDescription}");
                     }
+                    else if (_barcodesRequest.Results is { Length: > 0 } results)
+                    {
+                        foreach (var barcode in results)
+                        {
+                            HandleBarcode(barcode, snapshot);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -73,26 +91,18 @@ public class BarcodeScannerARSessionDelegate : ARSessionDelegate
         }
     }
 
-    private void HandleBarcodes(VNRequest request, NSError? error)
+    private void HandleBarcode(VNBarcodeObservation barcode, CameraSnapshot camera)
     {
-        if (error != null || request is not VNDetectBarcodesRequest breq || breq.Results is not { Length: > 0 } results)
-        {
-            return;
-        }
+        var payload = barcode.PayloadStringValue;
+        var symbology = barcode.Symbology;
 
-        foreach (var barcode in results)
+        if (payload != null)
         {
-            var payload = barcode.PayloadStringValue;
-            var symbology = barcode.Symbology;
-
-            if (payload != null)
+            BarcodeScanned?.Invoke(this, new BarcodeScannedDetailedEventArgs
             {
-                BarcodeScanned?.Invoke(this, new BarcodeScannedDetailedEventArgs
-                {
-                    BarcodeContent = payload,
-                    Symbology = symbology
-                });
-            }
+                BarcodeContent = payload,
+                Symbology = symbology
+            });
         }
     }
 
